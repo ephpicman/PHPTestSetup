@@ -1,12 +1,12 @@
 {
-    "name": "ephpicman/td-php",
-    "description": "A test-driven PHP project skeleton with PHPUnit, PHPStan, Psalm, and PHP CS Fixer preconfigured.",
+    "name": "pentarix/base-component",
+    "description": "A reusable PHP project template with PHPUnit, PHPStan, Psalm, and PHP CS Fixer configured for test-driven development.",
     "type": "project",
     "license": "MIT",
     "keywords": [
         "php",
+        "project-template",
         "skeleton",
-        "template",
         "test-driven-development",
         "testing",
         "phpunit",
@@ -14,16 +14,16 @@
         "psalm",
         "php-cs-fixer"
     ],
-    "homepage": "https://github.com/EphpicMan/TD-PHP",
+    "homepage": "https://github.com/pentarix/base-component",
     "support": {
-        "issues": "https://github.com/EphpicMan/TD-PHP/issues",
-        "source": "https://github.com/EphpicMan/TD-PHP"
+        "issues": "https://github.com/pentarix/base-component/issues",
+        "source": "https://github.com/pentarix/base-component"
     },
     "authors": [
         {
             "name": "Sina Kuhestani",
             "email": "sinakuhestani@gmail.com",
-            "homepage": "https://github.com/EphpicMan",
+            "homepage": "https://github.com/ephpicman",
             "role": "Developer"
         }
     ],
