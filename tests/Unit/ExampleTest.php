@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\\Unit;
+namespace Tests\Unit;
 
-use App\\Example;
-use PHPUnit\\Framework\\TestCase;
+use App\Example;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @psalm-suppress UnusedClass
