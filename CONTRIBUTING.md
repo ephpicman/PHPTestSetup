@@ -1,6 +1,6 @@
 # Contributing
 
-TD-PHP is a generic PHP project skeleton focused on test-driven development and a small, explicit quality baseline.
+Pentarix Base Component is a generic PHP project template focused on test-driven development and a small, explicit quality baseline.
 
 ## Development environment
 
@@ -15,7 +15,7 @@ Install dependencies:
 composer install
 ```
 
-## The development loop
+## Development workflow
 
 For behaviour changes, prefer a test-first workflow:
 
@@ -25,24 +25,19 @@ For behaviour changes, prefer a test-first workflow:
 4. Refactor without changing the behaviour.
 5. Run the complete quality gate.
 
-The important part is not the ceremony. The important part is that the test describes behaviour before the implementation becomes the source of truth.
+The aim is to make tests describe expected behaviour rather than coupling them unnecessarily to implementation details.
 
 ## Verification
 
-Run the complete local check with:
+Run the complete local check:
 
 ```bash
 composer check-all
 ```
 
-This verifies:
+This verifies formatting, PHPStan, Psalm, and PHPUnit.
 
-1. PHP formatting.
-2. PHPStan.
-3. Psalm.
-4. PHPUnit.
-
-To run individual checks:
+Individual checks are available:
 
 ```bash
 composer test
@@ -51,7 +46,7 @@ composer analyze:psalm
 composer format:check
 ```
 
-To apply PHP CS Fixer formatting:
+Apply PHP CS Fixer formatting with:
 
 ```bash
 composer format
@@ -61,46 +56,24 @@ After formatting, run `composer check-all` again.
 
 ## Tests
 
-Production code belongs in `src/`. Tests belong in `tests/`.
+Production code belongs in `src/`; tests belong in `tests/`.
 
-Use PHPUnit for automated tests. Keep tests deterministic and focused on observable behaviour.
+Use PHPUnit for automated tests. Keep tests deterministic and focused on observable behaviour. Prefer small tests with clear assertions, explicit inputs and outputs, and isolated unit tests where practical. Use integration tests when integration itself is the behaviour being verified.
 
-Prefer:
-
-- small tests with one clear reason to fail;
-- explicit inputs and outputs;
-- isolated unit tests where possible;
-- integration tests when integration itself is the behaviour under test.
-
-Avoid coupling tests to implementation details unless the implementation detail is itself part of the contract being verified.
-
-Coverage is useful for finding untested areas, but TD-PHP does not treat a coverage percentage as a substitute for test quality.
+Coverage can help identify untested areas, but a percentage is not a substitute for test quality.
 
 ## Static analysis
 
-Both PHPStan and Psalm are part of the baseline.
+Both PHPStan and Psalm are part of the baseline. New production code should pass both analysers.
 
-New production code should pass both analysers. Do not add broad suppressions simply to make the checks green.
-
-When a warning identifies a real design or typing problem, prefer fixing the underlying code. If a suppression is genuinely necessary, keep it narrow and document why.
+Do not add broad suppressions merely to make checks pass. Prefer fixing the underlying typing or design issue. If a suppression is genuinely necessary, keep it narrow and explain why it is required.
 
 ## Formatting
 
 PHP CS Fixer is the formatting tool for this repository.
 
-Use:
-
-```bash
-composer format
-```
-
-to apply formatting, and:
-
-```bash
-composer format:check
-```
-
-to verify formatting without modifying files.
+- Run `composer format` to apply formatting.
+- Run `composer format:check` to verify formatting without modifying files.
 
 Avoid unrelated formatting changes in a functional change.
 
@@ -115,20 +88,13 @@ tests/     automated tests
 
 Start with `tests/Unit/` when unit tests are appropriate. Add other test categories only when the project needs them.
 
-Do not introduce framework-specific directories or infrastructure into the skeleton itself.
+Do not introduce framework-specific directories or infrastructure into the template itself.
 
 ## Dependencies and tooling
 
-The baseline intentionally contains four development tools:
+The baseline intentionally includes PHPUnit, PHPStan, Psalm, and PHP CS Fixer. Do not add another testing or analysis tool merely because it is popular; add infrastructure when the project has a demonstrated need for it.
 
-- PHPUnit
-- PHPStan
-- Psalm
-- PHP CS Fixer
-
-Do not add another testing or analysis tool merely because it is popular. Add infrastructure only when the project has a demonstrated need for it.
-
-Likewise, do not remove one of the baseline tools without an explicit decision to change TD-PHP's purpose.
+Keep the template independent of frameworks and content-management systems. In particular, do not introduce WordPress-specific dependencies or assumptions into this generic PHP template.
 
 ## Pull requests
 
@@ -138,7 +104,7 @@ A good change should:
 - keep the change as small as practical;
 - include or update tests when behaviour changes;
 - preserve compatibility unless a breaking change is intentional;
-- keep the skeleton generic;
+- keep the template generic;
 - update documentation when the development workflow changes.
 
 Before opening a pull request, run:
@@ -147,4 +113,4 @@ Before opening a pull request, run:
 composer check-all
 ```
 
-Then review the final diff for generated files, accidental dependencies, and unrelated changes.
+Review the final diff for generated files, accidental dependencies, and unrelated changes.

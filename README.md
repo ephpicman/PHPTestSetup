@@ -1,44 +1,26 @@
-# TD-PHP
+# Pentarix Base Component
 
-TD-PHP is a **generic PHP project skeleton for test-driven development (TDD)**.
+Pentarix Base Component is a **generic PHP project template for test-driven development (TDD)**.
 
-The goal is simple: start a new PHP project with a conventional structure and the essential development-quality tooling already configured, so you can start writing tests and production code immediately.
+It provides a conventional starting structure and an essential development-quality toolchain, so a new PHP project can begin with tests, static analysis, and consistent formatting from its first commit.
 
-TD-PHP is intentionally **not** a framework, CMS plugin, application, or domain-specific starter. It contains no WordPress integration and no frontend toolchain.
+This template is intentionally independent of any framework, CMS, or frontend stack. It has no WordPress integration and introduces no application architecture.
 
 ## What you get
 
-TD-PHP starts with four development tools:
+The baseline includes four development tools:
 
 - **PHPUnit** — automated tests.
 - **PHPStan** — static analysis.
-- **Psalm** — a second, independent static-analysis pass.
-- **PHP CS Fixer** — deterministic PHP formatting.
+- **Psalm** — an independent static-analysis pass.
+- **PHP CS Fixer** — consistent PHP formatting.
 
-They are already wired into Composer scripts, so the normal workflow is straightforward:
+The tools are integrated with Composer scripts:
 
 ```bash
 composer install
 composer check-all
 ```
-
-The skeleton targets **PHP 8.2+**.
-
-## Why this skeleton exists
-
-A new PHP project should not have to spend its first day deciding how to install PHPUnit, how to structure tests, how to run static analysis, or how to enforce formatting.
-
-TD-PHP provides that baseline from the beginning.
-
-It is designed for a workflow where tests are part of development rather than something added after the implementation:
-
-1. Write a failing test.
-2. Implement the smallest change that makes it pass.
-3. Refactor while keeping the test suite green.
-4. Run static analysis and formatting checks.
-5. Repeat.
-
-The repository does not try to prescribe an application architecture. It gives you the development foundation and leaves the domain design to the project.
 
 ## Requirements
 
@@ -46,140 +28,70 @@ The repository does not try to prescribe an application architecture. It gives y
 - Composer 2.x.
 - For HTML coverage reports: **Xdebug** or **PCOV** enabled in the PHP environment.
 
-Install dependencies:
+## Create a project from this template
 
-```bash
-composer install
-```
+Use GitHub's **Use this template** action to create a repository, then clone your new repository.
 
-## Customising the skeleton
+After creating the project, review the following items before starting development:
 
-TD-PHP is a starting point, not a fixed architecture. After copying or using the skeleton for a real project, review these configuration points.
+1. **Project identity:** update the Composer package name, description, keywords, homepage, and support links in `composer.json`.
+2. **Namespaces:** replace the placeholder `App\` and `Tests\` PSR-4 namespaces with the namespaces used by your project. Update directory names if required.
+3. **PHP support:** review the `php` constraint in `composer.json` and the PHP version matrix in `.github/workflows/ci.yml`. Keep them aligned with the versions you intend to support.
+4. **Dependencies:** add only the runtime and development dependencies your project needs.
+5. **Install dependencies:** run `composer install`.
+6. **Example code:** replace or remove `src/Example.php` and `tests/Unit/ExampleTest.php`.
+7. **Tool configuration:** review `phpunit.xml`, `phpstan.neon`, `psalm.xml`, and `.php-cs-fixer.dist.php`.
+8. **Verification:** run `composer check-all` and review the CI workflow for your project.
 
-| Area | Where | What you can change |
-| --- | --- | --- |
-| Project identity | `composer.json` | Package name, description, keywords, homepage, and authors. |
-| PHP version | `composer.json` | Change the `php` constraint to the versions your project supports. |
-| Namespace | `composer.json` | Replace `App\\` with your project's production namespace. |
-| Test namespace | `composer.json` | Replace `Tests\\` if your test namespace follows a different convention. |
-| Dependencies | `composer.json` | Add the runtime and development packages your project actually needs. |
-| Test layout | `phpunit.xml` | Change the test-suite directories or add additional suites. |
-| PHPStan scope/level | `phpstan.neon` | Change analysed paths and the analysis level to match the project. |
-| Psalm scope/strictness | `psalm.xml` | Change analysed directories and error level as the project evolves. |
-| Formatting rules | `.php-cs-fixer.dist.php` | Adjust the fixer rules and directories to match the project's coding standard. |
-| Coverage | `composer.json` / PHPUnit config | Keep coverage diagnostic, or add a project-specific coverage policy if one is justified. |
-| CI PHP versions | `.github/workflows/ci.yml` | Change the supported PHP matrix and the PHP version used for quality checks. |
-| CI checks | `.github/workflows/ci.yml` | Add, remove, or split jobs when the project's verification requirements change. |
+Keep `"type": "project"` in Composer for an application or project repository. Change it only if you deliberately turn the repository into a distributable Composer package.
 
-### Namespace and package identity
+## Development workflow
 
-The skeleton uses:
+The template supports a simple TDD loop:
 
-```text
-App\\ => src/
-Tests\\ => tests/
-```
+1. Write a test describing the required behaviour.
+2. Run it and confirm that it fails for the expected reason.
+3. Implement the smallest change that makes it pass.
+4. Refactor while keeping the tests green.
+5. Run static analysis and formatting checks.
 
-For a real project, replace these placeholders with the project's actual namespaces and update the corresponding directories if necessary.
+The template provides the development foundation; the project remains responsible for its own domain model and architecture.
 
-### Static-analysis strictness
+## Composer commands
 
-PHPStan starts at level 8 and analyses `src/`. Psalm analyses both `src/` and `tests/` because PHPUnit discovers test classes at runtime and they are still useful to analyse.
+| Command | Purpose |
+| --- | --- |
+| `composer test` | Run the PHPUnit test suite. |
+| `composer test:coverage` | Generate an HTML coverage report under `build/coverage/`. |
+| `composer analyze:phpstan` | Run PHPStan. |
+| `composer analyze:psalm` | Run Psalm. |
+| `composer format` | Apply PHP CS Fixer formatting. |
+| `composer format:check` | Check formatting without changing files. |
+| `composer check-all` | Run formatting verification, PHPStan, Psalm, and PHPUnit. |
+| `composer audit` | Check installed dependencies against known security advisories. |
 
-If a project needs a different balance between adoption effort and strictness, adjust the analyser configuration deliberately. Prefer fixing real findings over adding broad suppressions.
+### Code coverage
 
-### Formatting policy
+The coverage command requires a code-coverage driver. Install and enable [Xdebug](https://xdebug.org/docs/install) or [PCOV](https://github.com/krakjoe/pcov).
 
-PHP CS Fixer provides the repository's baseline formatting rules. Projects can change the rule set, allow or forbid risky rules, and change which directories are formatted.
-
-Keep formatting changes intentional: the skeleton should enforce a consistent policy, not continually rewrite unrelated code.
-
-### CI matrix and quality gate
-
-The CI workflow currently tests PHPUnit against PHP 8.2 through 8.5 and runs static analysis and formatting checks on PHP 8.5.
-
-If your project supports a different PHP range, update the matrix accordingly. If a tool has compatibility requirements that differ from the runtime matrix, keep those concerns explicit rather than silently relying on one PHP version.
-
-## Development commands
-
-### Write and run unit tests
-
-Tests are written with PHPUnit. Before adding tests, read the [official PHPUnit documentation](https://docs.phpunit.de/en/11.5/writing-tests-for-phpunit.html), especially its guidance on writing tests and assertions.
-
-Add unit tests under `tests/Unit/` and run them with:
-
-```bash
-composer test
-```
-
-### Run tests with HTML coverage
-
-```bash
-composer test:coverage
-```
-
-The report is generated under `build/coverage/`.
-
-This command requires a code-coverage driver. Install and enable either [Xdebug](https://xdebug.org/docs/install) or [PCOV](https://github.com/krakjoe/pcov) for the PHP environment running PHPUnit. The GitHub Actions workflow also runs this command with Xdebug enabled and uploads the HTML report as a workflow artifact.
-
-Coverage is provided as a diagnostic tool. TD-PHP does not impose an arbitrary coverage percentage: meaningful tests matter more than maximising a number.
-
-### Run PHPStan
-
-```bash
-composer analyze:phpstan
-```
-
-PHPStan analyses the production source tree.
-
-### Run Psalm
-
-```bash
-composer analyze:psalm
-```
-
-Psalm provides an independent static-analysis pass over the production and test source trees.
-
-### Check formatting
-
-Without modifying files:
-
-```bash
-composer format:check
-```
-
-Apply formatting:
-
-```bash
-composer format
-```
-
-### Check dependencies for known vulnerabilities
-
-```bash
-composer audit
-```
-
-The CI workflow runs this check after installing dependencies. It reports known security advisories affecting the resolved dependency versions; it does not guarantee that dependencies are free of all vulnerabilities.
+Coverage is a diagnostic tool, not a substitute for meaningful tests. The template does not impose an arbitrary coverage percentage.
 
 ### Dependency lock file
 
-This repository is a reusable project template and intentionally does not commit `composer.lock`. When you create a real project from the template, run `composer install` to resolve dependencies, then commit the generated `composer.lock` in that project so its dependency versions are reproducible.
+This repository intentionally does not include `composer.lock`, because it is a reusable project template. Once you create a real project, run `composer install` and commit the generated lock file to make dependency resolution reproducible for that project.
 
-### Run the complete quality gate
+## Configuration
 
-```bash
-composer check-all
-```
+| Area | File | Baseline |
+| --- | --- | --- |
+| Composer identity and dependencies | `composer.json` | PHP 8.2+, PSR-4 autoloading, development tools, and quality scripts. |
+| PHPUnit | `phpunit.xml` | Discovers tests under `tests/` and measures source under `src/`. |
+| PHPStan | `phpstan.neon` | Level 8 analysis of production source. |
+| Psalm | `psalm.xml` | Analyses production and test code. |
+| PHP CS Fixer | `.php-cs-fixer.dist.php` | Repository formatting rules. |
+| CI | `.github/workflows/ci.yml` | PHPUnit across the configured PHP matrix, plus quality checks. |
 
-This runs, in order:
-
-1. PHP CS Fixer verification.
-2. PHPStan.
-3. Psalm.
-4. PHPUnit.
-
-The verification command does not rewrite source files.
+Adjust these settings to suit the actual project. Prefer fixing underlying typing or design issues over introducing broad static-analysis suppressions.
 
 ## Project structure
 
@@ -190,6 +102,9 @@ The verification command does not rewrite source files.
 ├── tests/
 │   └── Unit/
 │       └── ExampleTest.php
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── .editorconfig
 ├── .gitignore
 ├── .php-cs-fixer.dist.php
@@ -202,69 +117,21 @@ The verification command does not rewrite source files.
 └── README.md
 ```
 
-### Source code
+Production code belongs under `src/`; automated tests belong under `tests/`. Add integration or functional test directories only when the project has a real need for them.
 
-Production PHP belongs under `src/`.
+## Design principles
 
-The Composer autoloader uses the placeholder namespace:
-
-```text
-App\\ => src/
-```
-
-When starting a real project, replace `App\\` with the project's actual namespace and package name.
-
-### Tests
-
-Tests belong under `tests/`.
-
-The example test lives under `tests/Unit/` to establish a conventional starting point. As a project grows, additional test categories can be introduced where they are justified, for example:
-
-```text
-tests/
-├── Unit/
-├── Integration/
-└── Functional/
-```
-
-Do not create test categories just for the sake of having directories. The test structure should follow the system being tested.
-
-## TDD starting point
-
-The repository includes one deliberately small example:
-
-- `src/Example.php` contains a minimal class.
-- `tests/Unit/ExampleTest.php` tests its observable behaviour.
-
-The example exists to prove that the skeleton works immediately after installation and to show where production code and tests belong. It is not intended to be an application architecture.
-
-For a real project, replace or remove the example and begin with the behaviour you actually need.
-
-## Tooling policy
-
-TD-PHP deliberately starts with four tools and keeps their responsibilities separate:
-
-| Tool | Responsibility |
-| --- | --- |
-| PHPUnit | Tests and test execution |
-| PHPStan | Static analysis |
-| Psalm | Independent static analysis |
-| PHP CS Fixer | Formatting |
-
-No frontend tooling, WordPress-specific tooling, framework, test runner, mutation-testing system, or additional analysis framework is required by the baseline.
-
-The purpose is not to maximise the number of tools. The purpose is to make a new PHP codebase testable and maintainable from its first commit.
+- **Generic PHP:** no framework, CMS, or WordPress dependency.
+- **No prescribed application architecture:** choose structures that fit the actual domain.
+- **Small development baseline:** use tools with clear, distinct responsibilities.
+- **Test-first development:** make behaviour explicit through tests.
+- **Maintainability:** favour clear code, explicit checks, and narrow configuration.
+- **No unnecessary runtime dependencies:** the template should not dictate the dependencies of the project built from it.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the development and verification workflow.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development and verification guidance.
 
-Before submitting a change:
+## Licence
 
-```bash
-composer check-all
-```
-
-## License
-
-TD-PHP is licensed under the MIT License. See [LICENSE](LICENSE).
+This project is licensed under the MIT Licence. See [LICENSE](LICENSE).
