@@ -35,7 +35,7 @@ Use GitHub's **Use this template** action to create a repository, then clone you
 After creating the project, review the following items before starting development:
 
 1. **Project identity:** update the Composer package name, description, keywords, homepage, and support links in `composer.json`.
-2. **Namespaces:** replace the placeholder `App\\` and `Tests\\` PSR-4 namespaces with the namespaces used by your project. Update directory names if required.
+2. **Namespaces:** replace the placeholder `App\` and `Tests\` PSR-4 namespaces with the namespaces used by your project. Update directory names if required.
 3. **PHP support:** review the `php` constraint in `composer.json` and the PHP version matrix in `.github/workflows/ci.yml`. Keep them aligned with the versions you intend to support.
 4. **Dependencies:** add only the runtime and development dependencies your project needs.
 5. **Install dependencies:** run `composer install`.
